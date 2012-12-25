@@ -5,10 +5,12 @@
 #include <cstdlib>
 #include "math.h"
 #include <gl/glut.h>
+#include "Flower.h"
 
 int WINDOW_HEIGHT = 500;
 int WINDOW_WIDTH = 500;
 float xrot = 0, yrot = 0, xpos = 0, ypos = 2, zpos = 10;
+int numCell = 3;
 
 void floor( int, int );
 
@@ -25,12 +27,12 @@ void display( void ){
 	glPushMatrix();
 
 	camera();
-	//gluLookAt(0, 2, 10, 0, 0, 0, 0, 1, 0 ); 
 
 	glColor3f( 0, 1.0, 0 );
 	glLineWidth( 1 );
 
-	floor( 4, 4 );
+	floor( numCell, numCell );
+	Flower flower( 0.5, 0, -0.5 );
 
 	glPopMatrix();
 	glutSwapBuffers();
@@ -76,6 +78,12 @@ void keyboard( unsigned char key, int x, int y ){
             xpos += float( cos(yrad)) * 0.2;
             zpos += float( sin(yrad)) *0.2;
             break;
+		case 'j':   // Decrease by 1 Row/Col
+			numCell--;
+			break;
+		case 'k':   // Increase by 1 Row/Col
+			numCell++;
+			break;
         case 'q':   // Exit.
             exit(1);
             break;
