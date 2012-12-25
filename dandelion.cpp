@@ -8,6 +8,8 @@
 int WINDOW_HEIGHT = 500;
 int WINDOW_WIDTH = 500;
 
+void floor( int, int );
+
 void display( void ){
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glLoadIdentity();
@@ -16,25 +18,29 @@ void display( void ){
 	gluLookAt(0, 2, 10, 0, 0, 0, 0, 1, 0 ); 
 
 	glColor3f( 0, 1.0, 0 );
-	glLineWidth( 3 );
-	glBegin( GL_LINE_STRIP );
-		glVertex3d(0,0,0);
-		glVertex3d(2,0, 0);
-		glVertex3d(2, 0, -2);
-		glVertex3d(0, 0, 0);
+	glLineWidth( 1 );
 
-		glVertex3d(0, 0, -2);
-		glVertex3d( 2, 0, -2);
-		
-		glVertex3d( 2, 0, -4 );
-		glVertex3d( 0, 0, -2 );
-		glVertex3d( 0, 0, -4 );
-		glVertex3d( 2, 0, -4 );
-	glEnd();
+	floor( 4, 4 );
 
 	glPopMatrix();
 	glEnable( GL_DEPTH_TEST );
 	glFlush();
+}
+
+void floor( int row, int col ){
+	glBegin( GL_LINE_STRIP );
+	glVertex3d( 0, 0, 0 );
+	for( int r = 1; r <= row; r++ ){
+		for( int c = 1; c <= col; c++ ){
+			glVertex3d( r, 0, -c+1 );
+			glVertex3d( r, 0, -c );
+			glVertex3d( r-1, 0, -c+1 );
+			glVertex3d( r-1, 0, -c );
+			glVertex3d( r, 0, -c );
+		}
+		glVertex3d( r, 0, 0 );
+	}
+	glEnd();
 }
 
 int main(int argc, char* argv[])
