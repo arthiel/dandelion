@@ -27,6 +27,9 @@
     <ClInclude Include="Flower.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="vecmath.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

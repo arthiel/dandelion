@@ -1,5 +1,5 @@
 // dandelion.cpp : Defines the entry point for the console application.
-//
+// Author: Emily Egeland
 
 #include "stdafx.h"
 #include <cstdlib>
@@ -78,6 +78,9 @@ void keyboard( unsigned char key, int x, int y ){
             xpos += float( cos(yrad)) * 0.2;
             zpos += float( sin(yrad)) *0.2;
             break;
+		case 'f':	// Add a flower
+
+			break;
 		case 'j':   // Decrease by 1 Row/Col
 			numCell--;
 			break;
