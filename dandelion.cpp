@@ -11,8 +11,67 @@ int WINDOW_HEIGHT = 500;
 int WINDOW_WIDTH = 500;
 float xrot = 0, yrot = 0, xpos = 0, ypos = 2, zpos = 10;
 int numCell = 3;
+const int numRows = 5;
+const int numCols = 5;
+int numFlowers = 0;
+Flower field[numRows][numCols];
 
 void floor( int, int );
+
+/** 
+ * Generate all flowers that are on the map
+ **/
+void makeField( ) {
+    for( int y = 0; y < numCols; y++ ){
+        for( int x = 0; x < numRows; x++ ){
+            if( field[y][x]._x != 0){
+                field[y][x].makeFlower();
+            }
+        }
+    }
+}
+
+/**
+ * Adds a flower to the scene
+ **/
+void addFlower() {
+    if( numFlowers >= numRows * numCols ) {
+        std::cout << "Max Flowers Added." << std::endl;
+        return;
+    }
+    numFlowers++;
+    int x = rand() % numRows;
+    int y = rand()% numCols;
+    while( field[y][x]._x != 0 ){
+            std::cout << x << " " << y << std::endl;
+
+        x = rand() % numRows;
+        y = rand()  % numCols;
+    }
+    field[y][x] = Flower( x +.5, 0, -y + .5 );
+    return;
+}
+
+/** 
+ * Removes a random flower from the field.
+ **/
+void removeFlower() {
+    if( numFlowers == 0 ){
+        std::cout << "No Flowers on Field." << std::endl;
+        return;
+    }
+    numFlowers--;
+    int x = rand() % numRows;
+    int y = rand()% numCols;
+    while( field[y][x]._x == 0 ){
+            std::cout << x << " " << y << std::endl;
+
+        x = rand() % numRows;
+        y = rand()  % numCols;
+    }
+    field[y][x] = Flower();
+    return;
+}
 
 void camera(){
     glRotatef( xrot, 1.0, 0.0, 0.0 );
@@ -32,7 +91,7 @@ void display( void ){
 	glLineWidth( 1 );
 
 	floor( numCell, numCell );
-	Flower flower( 0.5, 0, -0.5 );
+    makeField();
 
 	glPopMatrix();
 	glutSwapBuffers();
@@ -87,6 +146,12 @@ void keyboard( unsigned char key, int x, int y ){
 		case 'k':   // Increase by 1 Row/Col
 			numCell++;
 			break;
+        case 'n':   // Add Flower
+            addFlower();
+            break;
+        case 'm':   // Remove Flower
+            removeFlower();
+            break;
         case 'q':   // Exit.
             exit(1);
             break;
@@ -112,6 +177,9 @@ int main(int argc, char* argv[])
 	gluPerspective( 45, 1, 1, -1.0 );
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
+
+    field[0][0] = Flower( 0.5, 0, -0.5 );
+    numFlowers++;
 
 	glutDisplayFunc(display) ;
 	glutKeyboardFunc( keyboard );

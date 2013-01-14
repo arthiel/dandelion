@@ -12,8 +12,10 @@
 
 
 class Flower{
-	float _x, _y, _z;
 public:
+    	float _x, _y, _z;
+
+    Flower();
 	Flower( float, float, float );
 	void makeFlower();
     void Sphere( int n );

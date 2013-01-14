@@ -6,6 +6,13 @@
 #include "stdafx.h"
 #include "Flower.h"
 
+Flower::Flower( ) {
+    _x = 0;
+    _y = 0;
+    _z = 0;
+    // Does not make a flower.
+}
+
 Flower::Flower(float x, float y, float z){
 	_x = x;
 	_y = y;
