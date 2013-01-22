@@ -25,8 +25,9 @@ void Flower::makeFlower(){
 	glTranslatef( _x, _y, _z );
 	glPushMatrix();
 	glRotatef( -90, 1, 0, 0 );
+    glColor3f( 1, .6, 0 ); 
 	GLUquadricObj *c = gluNewQuadric();
-	gluCylinder( gluNewQuadric(), .05, .05, 1.5, 10, 10 );
+	gluCylinder( gluNewQuadric(), .02, .02, 1.5, 10, 10 );
 	glPopMatrix();
 	glTranslatef( 0, 1.45, 0 );
 	Sphere( 2);
@@ -56,8 +57,8 @@ void Flower::Sphere(int n){
     Point3 v7(1, 0, -a);
     Point3 v8(0, -a, -1);
     Point3 v9(-1, 0, -a);
-    Point3 v10(-a, -1, 0);
-    Point3 v11(a, -1, 0);
+   // Point3 v10(-a, -1, 0);
+   // Point3 v11(a, -1, 0);
 
     // Begin the tesselation!
     tesselateHead( v0, v1, v2, n );
@@ -66,20 +67,20 @@ void Flower::Sphere(int n){
     tesselateHead( v3, v5, v6, n );
     tesselateHead( v0, v7, v8, n );
     tesselateHead( v0, v8, v9, n );
-    tesselateHead( v5, v10, v11, n );
-    tesselateHead( v8, v11, v10, n );
+   // tesselateHead( v5, v10, v11, n );
+   // tesselateHead( v8, v11, v10, n );
     tesselateHead( v1, v9, v4, n );
-    tesselateHead( v10, v4, v9, n );
+//    tesselateHead( v10, v4, v9, n );
     tesselateHead( v2 ,v6, v7, n );
-    tesselateHead( v11, v7, v6, n );
+ //   tesselateHead( v11, v7, v6, n );
     tesselateHead( v3, v1, v4, n );
     tesselateHead( v3, v6, v2, n );
     tesselateHead( v0, v9, v1, n );
     tesselateHead( v0, v2, v7, n );
-    tesselateHead( v8, v10, v9, n );
-    tesselateHead( v8, v7, v11, n );
-    tesselateHead( v5, v4, v10, n );
-    tesselateHead( v5, v11, v6, n );
+ //   tesselateHead( v8, v10, v9, n );
+//    tesselateHead( v8, v7, v11, n );
+ //   tesselateHead( v5, v4, v10, n );
+  //  tesselateHead( v5, v11, v6, n );
 
     return;
 }
@@ -93,30 +94,38 @@ void Flower::tesselateHead( Point3 v0, Point3 v1, Point3 v2, int factor ){
         l.normalize();
         m.normalize();
         n.normalize();
-        v0 = Point3( l.x, l.y, l.z );
-        v1 = Point3( m.x, m.y, m.z );
-        v2 = Point3( n.x, n.y, n.z );
+        v0 = jitter( Point3( l.x, l.y, l.z ));
+        v1 = jitter( Point3( m.x, m.y, m.z ));
+        v2 = jitter( Point3( n.x, n.y, n.z ));
+
+
 
         // Make smaller to fit nicely on the screen :D
         //addTriangle( v0*.5, v1*.5, v2*.5 );
         glPushMatrix();
-        glColor3f( 1, 1, 1 );
+        glColor3f( .4, .6, 0 );
+       // glColor3f( 1, .6, 0 );  // A brownish color for seedlet stalks
+        // Create the seedlets spouting out from the center of the dandelion
         glBegin( GL_LINES );
             glVertex3f( 0, 0, 0 );
-            glVertex3f( v0.x, v0.y, v0.z );
+            glVertex3f( v0.x/2, v0.y/2, v0.z/2 );
             glVertex3f( 0, 0, 0 );
-            glVertex3f( v1.x, v1.y, v1.z );
+            glVertex3f( v1.x/2, v1.y/2, v1.z/2 );
             glVertex3f( 0, 0, 0 );
-            glVertex3f( v2.x, v2.y, v2.z );
+            glVertex3f( v2.x/2, v2.y/2, v2.z/2 );
         glEnd();
         
+        glColor3f( 1, 1, 1); // white tip fuzz
+        // Add the sphere to the end of the seedlet, this is where the hairs will spout from.
         glPushMatrix();
-            glTranslatef(v0.x, v0.y, v0.z );
-            glutSolidSphere( .05, 5, 5 );
+            glTranslatef(v0.x/2, v0.y/2, v0.z/2 );
+            glutSolidSphere( .02, 15, 15 );
+            drawHairs();
         glPopMatrix();
         glPushMatrix();
-            glTranslatef(v1.x, v1.y, v1.z );
-            glutSolidSphere( .05, 5, 5 );
+            glTranslatef(v1.x/2, v1.y/2, v1.z/2 );
+            glutSolidSphere( .02, 15, 15 );
+            drawHairs();
         glPopMatrix();
         /*glPushMatrix();
             glTranslatef(v2.x, v2.y, v2.z );
@@ -184,4 +193,32 @@ void Flower::addTriangle( Point3 a, Point3 b, Point3 c ){
         glVertex3f( c.x, c.y, c.z );
 
     glEnd();
+}
+
+/// TODO: Multiplies every time the point is hit... SOLVE> 
+Point3 Flower::jitter( Point3 x ){
+  /*  x.x = x.x + ( (rand() % 15) * .01 );
+    x.y = x.y + ( (rand() % 15) * .01 );
+    x.z = x.z + ( (rand() % 15) * .01 );*/
+    return x;
+}
+
+void Flower::drawHairs( ){
+    glPushMatrix();
+    //glTranslatef( orig.x, orig.y, orig.z );
+    glBegin( GL_LINES );
+        glVertex3f( 0, 0, 0 );
+        glVertex3f( .1, .1, .1 );
+        glVertex3f( 0, 0, 0 );
+        glVertex3f( -.1, .1, .1 );
+        glVertex3f( 0, 0, 0 );
+        glVertex3f( -.1, -.1, .1 );
+        glVertex3f( 0, 0, 0 );
+        glVertex3f( -.1, .1, -.1 );
+        glVertex3f( 0, 0, 0 );
+        glVertex3f( -.1, -.1, -.1 );
+        glVertex3f( 0, 0, 0 );
+        glVertex3f( .1, -.1, .1 );
+    glEnd();
+    glPopMatrix();
 }
