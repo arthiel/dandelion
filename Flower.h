@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include "gl/glut.h"
 #include "vecmath.h"
+#include "Seedlet.h"
 
 
 class Flower{

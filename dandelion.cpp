@@ -163,6 +163,7 @@ void keyboard( unsigned char key, int x, int y ){
         exit(1);
         break;
     }
+    display();
 }
 
 void timer( int val ){
@@ -191,7 +192,7 @@ int main(int argc, char* argv[])
 
     glutDisplayFunc(display) ;
     glutKeyboardFunc( keyboard );
-    glutTimerFunc( 10, timer, 0 );
+    //glutTimerFunc( 10, timer, 0 );
 
     glutMainLoop();
 

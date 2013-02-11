@@ -96,44 +96,32 @@ void Flower::tesselateHead( Point3 v0, Point3 v1, Point3 v2, int factor ){
         n.normalize();
         v0 = jitter( Point3( l.x, l.y, l.z ));
         v1 = jitter( Point3( m.x, m.y, m.z ));
-        v2 = jitter( Point3( n.x, n.y, n.z ));
+      //  v2 = jitter( Point3( n.x, n.y, n.z ));
 
 
 
         // Make smaller to fit nicely on the screen :D
-        //addTriangle( v0*.5, v1*.5, v2*.5 );
+       // addTriangle( v0*.5, v1*.5, v2*.5 );
         glPushMatrix();
         glColor3f( .4, .6, 0 );
        // glColor3f( 1, .6, 0 );  // A brownish color for seedlet stalks
         // Create the seedlets spouting out from the center of the dandelion
-        glBegin( GL_LINES );
-            glVertex3f( 0, 0, 0 );
-            glVertex3f( v0.x/2, v0.y/2, v0.z/2 );
+
             glVertex3f( 0, 0, 0 );
             glVertex3f( v1.x/2, v1.y/2, v1.z/2 );
-            glVertex3f( 0, 0, 0 );
-            glVertex3f( v2.x/2, v2.y/2, v2.z/2 );
+           // glVertex3f( 0, 0, 0 );
+           // glVertex3f( v2.x/2, v2.y/2, v2.z/2 );
         glEnd();
         
         glColor3f( 1, 1, 1); // white tip fuzz
         // Add the sphere to the end of the seedlet, this is where the hairs will spout from.
-        glPushMatrix();
-            glTranslatef(v0.x/2, v0.y/2, v0.z/2 );
-            glutSolidSphere( .02, 15, 15 );
-            drawHairs();
-        glPopMatrix();
-        glPushMatrix();
-            glTranslatef(v1.x/2, v1.y/2, v1.z/2 );
-            glutSolidSphere( .02, 15, 15 );
-            drawHairs();
-        glPopMatrix();
-        /*glPushMatrix();
-            glTranslatef(v2.x, v2.y, v2.z );
-            glutSolidSphere( .05, 5, 5 );
-        glPopMatrix();
-        */
-        glPopMatrix();
+        Seedlet something( v0.x/2, v0.y/2, v0.z/2 );
+        Seedlet something2( v1.x/2, v1.y/2, v1.z/2 );
+        something.drawSeedlet();
+        something2.drawSeedlet();
+
         glColor3f( 0, 1, 0 );
+        glPopMatrix();
         return;
     }
     else {
@@ -186,6 +174,7 @@ Point3 Flower::midpoint( Point3 a1, Point3 b1){
 }
 
 void Flower::addTriangle( Point3 a, Point3 b, Point3 c ){
+    glPushMatrix();
     glBegin( GL_LINE_LOOP );
        glVertex3f( a.x, a.y, a.z );
 
@@ -193,13 +182,14 @@ void Flower::addTriangle( Point3 a, Point3 b, Point3 c ){
         glVertex3f( c.x, c.y, c.z );
 
     glEnd();
+    glPopMatrix();
 }
 
 /// TODO: Multiplies every time the point is hit... SOLVE> 
 Point3 Flower::jitter( Point3 x ){
-  /*  x.x = x.x + ( (rand() % 15) * .01 );
-    x.y = x.y + ( (rand() % 15) * .01 );
-    x.z = x.z + ( (rand() % 15) * .01 );*/
+   // x.x = x.x + ( (rand() % 15) * .01 );
+   // x.y = x.y + ( (rand() % 15) * .01 );
+   // x.z = x.z + ( (rand() % 15) * .01 );
     return x;
 }
 
