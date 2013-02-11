@@ -122,18 +122,18 @@ void keyboard( unsigned char key, int x, int y ){
     float xrad = (xrot / 180 * 3.141592654f);
     switch( key ) {
     case 'w':   // Move FORWARD
-        xpos += float( sin(yrad));
-        zpos -= float( cos(yrad));
-        ypos -= float( sin(xrad));
+        xpos += float( sin(yrad)) *.5;
+        zpos -= float( cos(yrad)) *.5;
+        ypos -= float( sin(xrad)) *.5;
         break;
     case 'a':   // Side step LEFT
         xpos -= float( cos(yrad)) * 0.2;
         zpos -= float( sin(yrad)) * 0.2;
         break;
     case 's':   // Move camera BACKWARD
-        xpos -= float( sin(yrad));
-        zpos += float( cos(yrad));
-        ypos += float(sin(xrad));
+        xpos -= float( sin(yrad)) *.5;
+        zpos += float( cos(yrad)) *.5;
+        ypos += float(sin(xrad)) *.5;
         break;
     case 'd':   // Side step RIGHT 
         xpos += float( cos(yrad)) * 0.2;

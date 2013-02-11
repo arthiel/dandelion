@@ -20,6 +20,7 @@ public:
 	Flower( float, float, float );
 	void makeFlower();
     void Sphere( int n );
+    void HardSphere();
     void tesselateHead( Point3 v0, Point3 v1, Point3 v2, int factor );
     Point3 midpoint( Point3 a1, Point3 b1 );
     void addTriangle( Point3 a, Point3 b, Point3 c );

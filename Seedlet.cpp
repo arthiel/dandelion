@@ -18,16 +18,33 @@ Seedlet::Seedlet( float x, float y, float z ){
 void Seedlet::drawSeedlet(){
 
     glPushMatrix();
+    glColor3f( .4, .6, 0 );
     glBegin( GL_LINES );
     glVertex3f( 0, 0, 0 );
-    glVertex3f( top_x, top_y, top_z );
+    glVertex3f( 0, .5, 0 );
     glEnd();
     glPopMatrix();
+    glColor3f( 1, 1, 1);
+    Vector3 up( top_x, top_y, top_z );
+    up.normalize();
 
+    Vector3 xside( 1, 0, 0 );
+    Vector3 yside( 0, 1, 0 );
+    Vector3 zside( 0, 0, 1 );
+
+    float angx = (xside * up);
+    float angy = (yside * up);
+    float angz = (zside * up);
+    
     glPushMatrix();
-    glTranslatef(top_x, top_y, top_z );
+   glTranslatef( 0, .5, 0 );
     glutSolidSphere( .02, 15, 15 );
+    
+    glPushMatrix();
+
+
     drawHairs();
+    glPopMatrix();
     glPopMatrix();
 
 }
@@ -45,6 +62,9 @@ void Seedlet::drawHairs( ){
     // Point Q
     Point3 q( .5, 0, 0 );
     // Point S
+   // Vector3 sv(top_x, top_y, top_z );
+  //  sv.normalize();
+   // Point3 ( sv.x, sv.y, sv.z );
     Point3 s( .5, .5, 0 );
 
     glBegin(GL_POINTS);

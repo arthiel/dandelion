@@ -23,19 +23,37 @@ Flower::Flower(float x, float y, float z){
 void Flower::makeFlower(){
 	glPushMatrix();
 	glTranslatef( _x, _y, _z );
-	glPushMatrix();
+	// THis is the green stalk of the flower.
+    glPushMatrix();
 	glRotatef( -90, 1, 0, 0 );
     glColor3f( 1, .6, 0 ); 
 	GLUquadricObj *c = gluNewQuadric();
 	gluCylinder( gluNewQuadric(), .02, .02, 1.5, 10, 10 );
 	glPopMatrix();
+
+    // Now to the head!
 	glTranslatef( 0, 1.45, 0 );
-	Sphere( 2);
+	Sphere(2);
+   // HardSphere();
     //glutWireSphere( .5, 10, 10 );
 
 	glPopMatrix();
 }
 
+void Flower::HardSphere(){
+    Seedlet up( 0, 1, 0 );
+    up.drawSeedlet();
+    Seedlet dup( 0, 1, 0 );
+    dup.drawSeedlet();
+    for( int i =0; i < 13; i++ ){
+    glRotatef( 45, 0, 0, 1);
+    glPushMatrix();
+        glRotatef(45, 1, 0, 0 );
+        Seedlet sup( 0, 1, 0 );
+        sup.drawSeedlet();
+    glPopMatrix();
+    }
+}
 /**** 
  * Create a Sphere
  * Parameters: 
@@ -103,7 +121,7 @@ void Flower::tesselateHead( Point3 v0, Point3 v1, Point3 v2, int factor ){
         // Make smaller to fit nicely on the screen :D
        // addTriangle( v0*.5, v1*.5, v2*.5 );
         glPushMatrix();
-        glColor3f( .4, .6, 0 );
+       /* glColor3f( .4, .6, 0 );
        // glColor3f( 1, .6, 0 );  // A brownish color for seedlet stalks
         // Create the seedlets spouting out from the center of the dandelion
 
@@ -111,13 +129,32 @@ void Flower::tesselateHead( Point3 v0, Point3 v1, Point3 v2, int factor ){
             glVertex3f( v1.x/2, v1.y/2, v1.z/2 );
            // glVertex3f( 0, 0, 0 );
            // glVertex3f( v2.x/2, v2.y/2, v2.z/2 );
-        glEnd();
-        
+        glEnd();*/
+        Vector3 xside( 1, 0, 0 );
+        Vector3 yside( 0, 1, 0 );
+        Vector3 zside( 0, 0, 1 );
+
+        Vector3 a = v0 - Point3(0,0,0);
+
+        float angx = (xside * a);
+        float angy = (yside * a);
+        float angz = (zside * a);
+        glRotatef( 100*angx, 1, 0, 0 );
+        glRotatef( 100*angy, 0, 1, 0 );
+        glRotatef( 100*angz, 0, 0, 1 );
         glColor3f( 1, 1, 1); // white tip fuzz
         // Add the sphere to the end of the seedlet, this is where the hairs will spout from.
         Seedlet something( v0.x/2, v0.y/2, v0.z/2 );
-        Seedlet something2( v1.x/2, v1.y/2, v1.z/2 );
         something.drawSeedlet();
+        glPopMatrix();
+        glPushMatrix();
+        a = v1 - Point3(0,0,0);
+
+        glRotatef( 100*angx, 1, 0, 0 );
+        glRotatef( 100*angy, 0, 1, 0 );
+        glRotatef( 100*angz, 0, 0, 1 );
+
+        Seedlet something2( v1.x/2, v1.y/2, v1.z/2 );
         something2.drawSeedlet();
 
         glColor3f( 0, 1, 0 );
