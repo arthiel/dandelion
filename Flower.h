@@ -15,6 +15,7 @@
 class Flower{
 public:
     	float _x, _y, _z;
+        int tess_value;
 
     Flower();
 	Flower( float, float, float );

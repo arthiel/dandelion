@@ -15,7 +15,7 @@ private:
     float width; // width of seedlet base
     float height; // height of seedlet
     //float base_x, base_y, base_z; // Position elements of base
-    float top_x, top_y, top_z; // Position elements of top
+    float rot_x, rot_y, rot_z; // How much it was rotated in each direction
 public:
     // Constructors
     Seedlet();

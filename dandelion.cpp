@@ -172,12 +172,33 @@ void timer( int val ){
 
 }
 
+void init() {
+    GLfloat mat_spec[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat mat_shiny[] = { 50.0 };
+    GLfloat light_pos[] = { 0.0, 3.0, 3.0 };
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glShadeModel( GL_SMOOTH );
+   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_spec);
+   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shiny);
+   glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+
+   glEnable(GL_LIGHTING);
+   glEnable(GL_LIGHT0);
+   glEnable(GL_DEPTH_TEST);
+
+    glColorMaterial( GL_FRONT_AND_BACK, GL_DIFFUSE);
+    glEnable( GL_COLOR_MATERIAL );
+}
+
 int main(int argc, char* argv[])
 {
     glutInit( &argc, argv );
     glutInitDisplayMode( GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
     glutInitWindowSize( WINDOW_HEIGHT, WINDOW_WIDTH );
     glutCreateWindow( argv[0] );
+
+    // Uncomment to add lighting
+    //init();
 
     glEnable( GL_DEPTH_TEST );
     glMatrixMode( GL_PROJECTION );

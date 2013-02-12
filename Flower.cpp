@@ -17,6 +17,7 @@ Flower::Flower(float x, float y, float z){
 	_x = x;
 	_y = y;
 	_z = z;
+    tess_value = (int)rand() % 2 + 2;
 	makeFlower();
 }
 
@@ -27,13 +28,15 @@ void Flower::makeFlower(){
     glPushMatrix();
 	glRotatef( -90, 1, 0, 0 );
     glColor3f( 1, .6, 0 ); 
+
 	GLUquadricObj *c = gluNewQuadric();
 	gluCylinder( gluNewQuadric(), .02, .02, 1.5, 10, 10 );
+
 	glPopMatrix();
 
     // Now to the head!
 	glTranslatef( 0, 1.45, 0 );
-	Sphere(2);
+	Sphere(tess_value);
    // HardSphere();
     //glutWireSphere( .5, 10, 10 );
 
