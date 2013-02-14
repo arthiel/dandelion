@@ -14,8 +14,9 @@
 
 class Flower{
 public:
-    	float _x, _y, _z;
+    	float _x, _y, _z, height;
         int tess_value;
+        int count, seedlet_limit;
 
     Flower();
 	Flower( float, float, float );
@@ -27,6 +28,7 @@ public:
     void addTriangle( Point3 a, Point3 b, Point3 c );
     Point3 jitter( Point3 x );
     void drawHairs( );
+    void printInfo();
 };
 
 #endif

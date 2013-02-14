@@ -13,6 +13,11 @@ Seedlet::Seedlet( float x, float y, float z ){
     rot_x = x;
     rot_y = y;
     rot_z = z;
+    hairlen = (float)((rand() % 3)/4) + .5;
+    ctrlpnt_x = .3;
+    ctrlpnt_y = .1;
+    //ctrlpnt_x = (rand() % 4 ) * .1;
+    //ctrlpnt_y = (rand() % 2 ) * .1;
 }
 
 void Seedlet::drawSeedlet(){
@@ -54,20 +59,20 @@ void Seedlet::drawHairs( ){
         // Point P
         Point3 p( 0, 0, 0 );
         // Point Q
-        Point3 q( .5, 0, 0 );
+        Point3 q( hairlen, 0, 0 );
         // Point S
-        Point3 s( .5, .5, 0 );
+        Point3 s( hairlen+ctrlpnt_x, hairlen+ctrlpnt_y, 0 );
 
         glBegin(GL_POINTS);
         // Create each point on the bezier curve
-        for( float u = 0; u < .5; u+=.01 ){
-            float Pux = (.5 - u ) * p.x + (u * q.x);
-            float Puy = (.5 - u ) * p.y + (u * q.y );
-            float Qux = (.5 - u ) * q.x + (u * s.x );
-            float Quy = (.5 - u ) * q.y + (u * s.y );
+        for( float u = 0; u < hairlen; u+=.01 ){
+            float Pux = (hairlen - u ) * p.x + (u * q.x);
+            float Puy = (hairlen - u ) * p.y + (u * q.y );
+            float Qux = (hairlen - u ) * q.x + (u * s.x );
+            float Quy = (hairlen - u ) * q.y + (u * s.y );
 
-            float pntx = (.5 - u ) * Pux + u * Qux;
-            float pnty = (.5 - u ) * Puy + u * Quy;
+            float pntx = (hairlen - u ) * Pux + u * Qux;
+            float pnty = (hairlen - u ) * Puy + u * Quy;
 
             glVertex3f( pntx, pnty, 0 );
         }

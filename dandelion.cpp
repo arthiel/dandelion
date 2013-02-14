@@ -84,6 +84,7 @@ void camera(){
 void display( void ){
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glLoadIdentity();
+    //gluLookAt( xpos, ypos, zpos, field[0][0]._x, field[0][0]._y, field[0][0]._z, 0, 1, 0 );
 
     glPushMatrix();
 
@@ -127,8 +128,9 @@ void keyboard( unsigned char key, int x, int y ){
         ypos -= float( sin(xrad)) *.5;
         break;
     case 'a':   // Side step LEFT
-        xpos -= float( cos(yrad)) * 0.2;
-        zpos -= float( sin(yrad)) * 0.2;
+        /*xpos -= float( cos(yrad)) * 0.2;
+        zpos -= float( sin(yrad)) * 0.2;*/
+        yrot+=5;
         break;
     case 's':   // Move camera BACKWARD
         xpos -= float( sin(yrad)) *.5;
@@ -136,8 +138,9 @@ void keyboard( unsigned char key, int x, int y ){
         ypos += float(sin(xrad)) *.5;
         break;
     case 'd':   // Side step RIGHT 
-        xpos += float( cos(yrad)) * 0.2;
-        zpos += float( sin(yrad)) *0.2;
+       /* xpos += float( cos(yrad)) * 0.2;
+        zpos += float( sin(yrad)) *0.2;*/
+        yrot-=5;
         break;
     case 'f':	// Add a flower
 
@@ -158,6 +161,8 @@ void keyboard( unsigned char key, int x, int y ){
         xpos = field[0][0]._x;
         ypos = field[0][0]._y + 1.5;
         zpos = field[0][0]._z + 1.5;
+        field[0][0].printInfo();
+        gluLookAt( xpos, ypos, zpos, field[0][0]._x, field[0][0]._y, field[0][0]._z, 0, 1, 0 );
         break;
     case 'q':   // Exit.
         exit(1);
@@ -169,7 +174,34 @@ void keyboard( unsigned char key, int x, int y ){
 void timer( int val ){
     glutPostRedisplay();
     glutTimerFunc( 10, timer, 0 );
+}
 
+void mouse( int button, int state, int x, int y ){
+    std::cout << x << std::endl;
+}
+
+void mousemove(int x, int y ){
+    float yrad = (yrot / 180 * 3.141592654f);
+    float xrad = (xrot / 180 * 3.141592654f);
+    std::cout << x << std::endl;
+    if( y > WINDOW_HEIGHT/2 ){   // Forward
+        xpos += float( sin(yrad)) *.5;
+        zpos -= float( cos(yrad)) *.5;
+        ypos -= float( sin(xrad)) *.5;
+    }
+    else if( y < WINDOW_HEIGHT/2 ){   // Backward
+        xpos -= float( sin(yrad)) *.5;
+        zpos += float( cos(yrad)) *.5;
+        ypos += float(sin(xrad)) *.5;
+    }
+    if( x > WINDOW_WIDTH/2 ){   // Left
+        xpos -= float( cos(yrad)) * 0.2;
+        zpos -= float( sin(yrad)) * 0.2;
+    }
+    else if( x < WINDOW_WIDTH /2 ){   // Right
+        xpos += float( cos(yrad)) * 0.2;
+        zpos += float( sin(yrad)) *0.2;
+    }
 }
 
 void init() {
@@ -213,7 +245,9 @@ int main(int argc, char* argv[])
 
     glutDisplayFunc(display) ;
     glutKeyboardFunc( keyboard );
-    //glutTimerFunc( 10, timer, 0 );
+    glutMouseFunc( mouse );
+    glutPassiveMotionFunc( mousemove );
+   // glutTimerFunc( 10, timer, 0 );
 
     glutMainLoop();
 
