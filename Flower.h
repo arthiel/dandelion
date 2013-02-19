@@ -17,9 +17,11 @@ public:
     	float _x, _y, _z, height;
         int tess_value;
         int count, seedlet_limit;
+        float radius;
+        Seedlet seeds[30];
 
     Flower();
-	Flower( float, float, float );
+	Flower( float, float, float, float );
 	void makeFlower();
     void Sphere( int n );
     void HardSphere();

@@ -13,7 +13,7 @@ Flower::Flower( ) {
     // Does not make a flower.
 }
 
-Flower::Flower(float x, float y, float z){
+Flower::Flower(float x, float y, float z, float r){
 	_x = x;
 	_y = y;
 	_z = z;
@@ -23,6 +23,7 @@ Flower::Flower(float x, float y, float z){
     count = 0;
     //seedlet_limit = 2;
     seedlet_limit = rand() % 3;
+    radius = r;
 	makeFlower();
 }
 
@@ -49,15 +50,15 @@ void Flower::makeFlower(){
 }
 
 void Flower::HardSphere(){
-    Seedlet up( 0, 1, 0 );
+    Seedlet up( 0, 1, 0, radius);
     up.drawSeedlet();
-    Seedlet dup( 0, 1, 0 );
+    Seedlet dup( 0, 1, 0, radius );
     dup.drawSeedlet();
     for( int i =0; i < 13; i++ ){
     glRotatef( 45, 0, 0, 1);
     glPushMatrix();
         glRotatef(45, 1, 0, 0 );
-        Seedlet sup( 0, 1, 0 );
+        Seedlet sup( 0, 1, 0, radius );
         sup.drawSeedlet();
     glPopMatrix();
     }
@@ -154,12 +155,10 @@ void Flower::tesselateHead( Point3 v0, Point3 v1, Point3 v2, int factor ){
             float angx = (xside * a);
             float angy = (yside * a);
             float angz = (zside * a);
-            glRotatef( 100*angx, 1, 0, 0 );
-            glRotatef( 100*angy, 0, 1, 0 );
-            glRotatef( 100*angz, 0, 0, 1 );
             glColor3f( 1, 1, 1); // white tip fuzz
             // Add the sphere to the end of the seedlet, this is where the hairs will spout from.
-            Seedlet something( v0.x/2, v0.y/2, v0.z/2 );
+            Point3 rotateMe( 100*angx, 100*angy, 100*angz );
+            Seedlet something( rotateMe, radius );
             something.drawSeedlet();
             glPopMatrix();
         }
@@ -169,11 +168,9 @@ void Flower::tesselateHead( Point3 v0, Point3 v1, Point3 v2, int factor ){
             float angx = (xside * a);
             float angy = (yside * a);
             float angz = (zside * a);
-            glRotatef( 100*angx, 1, 0, 0 );
-            glRotatef( 100*angy, 0, 1, 0 );
-            glRotatef( 100*angz, 0, 0, 1 );
-
-            Seedlet something2( v1.x/2, v1.y/2, v1.z/2 );
+      
+            Point3 rotateMe2( 100*angx, 100*angy, 100*angz );
+            Seedlet something2( rotateMe2, radius );
             something2.drawSeedlet();
 
             glColor3f( 0, 1, 0 );

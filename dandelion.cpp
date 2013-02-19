@@ -50,7 +50,7 @@ void addFlower() {
         x = rand() % numCell;
         y = rand()  % numCell;
     }
-    field[y][x] = Flower( x +.5, 0, -y + .5 );
+    field[y][x] = Flower( x +.5, 0, -y + .5, (rand()%4)*.25 );
     return;
 }
 
@@ -239,7 +239,7 @@ int main(int argc, char* argv[])
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
 
-    field[0][0] = Flower( 0.5, 0, -0.5 );
+    field[0][0] = Flower( 0.5, 0, -0.5, (rand()%4)*.25 );
     numFlowers++;
     addFlower();
 

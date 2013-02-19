@@ -20,7 +20,8 @@ private:
 public:
     // Constructors
     Seedlet();
-    Seedlet( float x, float y, float z );
+    Seedlet( Point3 rot, float height );
+    Seedlet( float x, float y, float z, float height );
     void drawSeedlet();
     void jitter();
     void drawHairs();
