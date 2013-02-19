@@ -7,22 +7,27 @@
 
 #include "stdafx.h"
 #include <cstdlib>
+#include <list>
 #include "gl/glut.h"
 #include "vecmath.h"
 #include "Seedlet.h"
 
 
 class Flower{
+    typedef list<Seedlet> SEEDLETS;
 public:
     	float _x, _y, _z, height;
         int tess_value;
         int count, seedlet_limit;
         float radius;
         Seedlet seeds[30];
+        Seedlet root;
+        int seed_ind;
 
     Flower();
 	Flower( float, float, float, float );
-	void makeFlower();
+	void mathFlower();
+    void makeFlower();
     void Sphere( int n );
     void HardSphere();
     void tesselateHead( Point3 v0, Point3 v1, Point3 v2, int factor );
@@ -31,6 +36,7 @@ public:
     Point3 jitter( Point3 x );
     void drawHairs( );
     void printInfo();
+    void checkSeedletExist( Point3 rot, Seedlet);
 };
 
 #endif

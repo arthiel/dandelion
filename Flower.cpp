@@ -24,11 +24,19 @@ Flower::Flower(float x, float y, float z, float r){
     //seedlet_limit = 2;
     seedlet_limit = rand() % 3;
     radius = r;
-	makeFlower();
+    root = Seedlet();
+    seed_ind = 0;
+	mathFlower();
+}
+
+void Flower::mathFlower(){
+
+	Sphere(tess_value);
+
 }
 
 void Flower::makeFlower(){
-	glPushMatrix();
+    glPushMatrix();
 	glTranslatef( _x, _y, _z );
 	// THis is the green stalk of the flower.
     glPushMatrix();
@@ -40,13 +48,13 @@ void Flower::makeFlower(){
 
 	glPopMatrix();
 
-    // Now to the head!
-	glTranslatef( 0, height - .05, 0 );
-	Sphere(tess_value);
-   // HardSphere();
-    //glutWireSphere( .5, 10, 10 );
+    glTranslatef( 0, height - .05, 0 );
 
-	glPopMatrix();
+    for( int i = 0; i < seed_ind; i++ ){
+        seeds[i].drawSeedlet();
+    }
+    glPopMatrix();
+
 }
 
 void Flower::HardSphere(){
@@ -105,15 +113,6 @@ void Flower::Sphere(int n){
     tesselateHead( v0, v9, v1, n );
     tesselateHead( v0, v2, v7, n );
 
-    
- //     tesselateHead( v8, v10, v9, n );
- //   tesselateHead( v8, v7, v11, n );
- //   tesselateHead( v5, v4, v10, n );
- //   tesselateHead( v5, v11, v6, n );
- //       tesselateHead( v11, v7, v6, n );
-  //      tesselateHead( v10, v4, v9, n );
-  //      tesselateHead( v5, v10, v11, n );
-  //  tesselateHead( v8, v11, v10, n );
     return;
 }
 
@@ -128,21 +127,7 @@ void Flower::tesselateHead( Point3 v0, Point3 v1, Point3 v2, int factor ){
         n.normalize();
         v0 = jitter( Point3( l.x, l.y, l.z ));
         v1 = jitter( Point3( m.x, m.y, m.z ));
-      //  v2 = jitter( Point3( n.x, n.y, n.z ));
 
-
-
-        // Make smaller to fit nicely on the screen :D
-       // addTriangle( v0*.5, v1*.5, v2*.5 );
-       /* glColor3f( .4, .6, 0 );
-       // glColor3f( 1, .6, 0 );  // A brownish color for seedlet stalks
-        // Create the seedlets spouting out from the center of the dandelion
-
-            glVertex3f( 0, 0, 0 );
-            glVertex3f( v1.x/2, v1.y/2, v1.z/2 );
-           // glVertex3f( 0, 0, 0 );
-           // glVertex3f( v2.x/2, v2.y/2, v2.z/2 );
-        glEnd();*/
         Vector3 xside( 1, 0, 0 );
         Vector3 yside( 0, 1, 0 );
         Vector3 zside( 0, 0, 1 );
@@ -158,8 +143,8 @@ void Flower::tesselateHead( Point3 v0, Point3 v1, Point3 v2, int factor ){
             glColor3f( 1, 1, 1); // white tip fuzz
             // Add the sphere to the end of the seedlet, this is where the hairs will spout from.
             Point3 rotateMe( 100*angx, 100*angy, 100*angz );
-            Seedlet something( rotateMe, radius );
-            something.drawSeedlet();
+            checkSeedletExist( rotateMe, root );
+
             glPopMatrix();
         }
         if( seedlet_limit == 1 || seedlet_limit == 2 ){
@@ -170,8 +155,8 @@ void Flower::tesselateHead( Point3 v0, Point3 v1, Point3 v2, int factor ){
             float angz = (zside * a);
       
             Point3 rotateMe2( 100*angx, 100*angy, 100*angz );
-            Seedlet something2( rotateMe2, radius );
-            something2.drawSeedlet();
+
+            checkSeedletExist( rotateMe2, root );
 
             glColor3f( 0, 1, 0 );
             glPopMatrix();
@@ -270,4 +255,20 @@ void Flower::drawHairs( ){
 
 void Flower::printInfo(){
     std::cout << "Tesselation Factor: " << tess_value << std::endl;
+}
+
+void Flower::checkSeedletExist( Point3 rotateMe, Seedlet go ){
+    std::cout << seed_ind << std::endl;
+    if( seed_ind >= 30 ){
+        return;
+    }
+    for( int i = 0; i <= seed_ind; i++ ){
+        if( rotateMe == seeds[i].returnRots() ){
+            return;
+        }
+    }
+    seeds[seed_ind] = Seedlet( rotateMe, radius );
+    seed_ind++;
+    return;
+
 }

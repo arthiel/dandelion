@@ -6,7 +6,9 @@
 #include "Seedlet.h"
 
 Seedlet::Seedlet(){
-
+    rot_x = 1;
+    rot_y = 1;
+    rot_z = 1;
 }
 
 Seedlet::Seedlet( Point3 rot, float h ) {
@@ -17,6 +19,8 @@ Seedlet::Seedlet( Point3 rot, float h ) {
     ctrlpnt_x = .3;
     ctrlpnt_y = .1;
     height = h;
+    Seedlet next =Seedlet();
+    Seedlet prev = Seedlet();
 }
 
 Seedlet::Seedlet( float x, float y, float z, float h ){
@@ -100,4 +104,8 @@ void Seedlet::drawHairs( ){
     }
 
     glPopMatrix();
+}
+
+Point3 Seedlet::returnRots(){
+    return Point3( rot_x, rot_y, rot_z );
 }
