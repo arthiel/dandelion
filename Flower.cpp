@@ -261,6 +261,7 @@ void Flower::printInfo(){
     std::cout << "Height: " << height << std::endl;
     std::cout << "Radius: " << radius << std::endl;
     std::cout << "Seedlet Hair Length: " << seed_hair << std::endl;
+    std::cout << std::endl;
 }
 
 void Flower::checkSeedletExist( Point3 rotateMe, Seedlet go ){

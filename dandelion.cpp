@@ -19,6 +19,7 @@ int numFlowers = 0;
 Flower field[numRows][numCols];
 
 Flower view[3];
+int num_view;
 
 void floor( int, int );
 
@@ -43,16 +44,28 @@ void addFlower() {
         std::cout << "Max Flowers Added." << std::endl;
         return;
     }
+    // Increase the number of flowers.
     numFlowers++;
+    // Find a new random place on the grid.
     int x = rand() % numCell;
     int y = rand()% numCell;
     while( field[y][x]._x != 0 ){
         x = rand() % numCell;
         y = rand()  % numCell;
     }
+    // Create new flower at this location.
     field[y][x] = Flower( x +.5, 0, -y + .5, (rand()%4)*.25 +.05);
     field[y][x].printInfo();
 
+    // If there are no or less flowers in the view array, add one.
+    if( num_view < 3 ){
+        for( int i =0; i < 3; i++ ){
+            if( view[x]._x == 0 && view[x]._y == 0 && view[x]._z == 0 ){
+                view[x] = field[y][x];
+                return;
+            }
+        }
+    }
     return;
 }
 
@@ -74,6 +87,16 @@ void removeFlower() {
         y = rand()  % numCell;
     }
     field[y][x] = Flower();
+    if( num_view > 0 ){
+        int a = 0;
+        while( view[a]._x != field[y][x]._x && view[a]._y != field[y][x]._y && view[a]._z != field[y][x]._y && a < 3){
+            a++;
+        }
+        if( a < 3 ){
+            view[a] = Flower();
+            num_view--;
+        }
+    }
     return;
 }
 
@@ -104,6 +127,7 @@ void display( void ){
     glFlush();
 }
 
+// Create the gridded floor
 void floor( int row, int col ){
     glBegin( GL_LINE_STRIP );
     glVertex3d( 0, 0, 0 );
@@ -120,20 +144,23 @@ void floor( int row, int col ){
     glEnd();
 }
 
-void view_specific( int x, int y ){
+// View a specific flower.
+void view_specific( int x){
 
-    while( field[y][x]._x != 0 ){
-        x = rand() % numCell;
-        y = rand()  % numCell;
+    while( view[x]._x == 0 && view[x]._y == 0 && view[x]._z == 0 &&x < num_view ){
+        x++;
     }
-
-    xpos = field[x][y]._x;
-    ypos = field[x][y]._y + 1.5;
-    zpos = field[x][y]._z + 1.5;
-    field[x][y].printInfo();
-    gluLookAt( xpos, ypos, zpos, field[x][y]._x, field[x][y]._y, field[x][y]._z, 0, 1, 0 );
+    if( view[x]._x == 0 && view[x]._y == 0 && view[x]._z == 0 ){
+        std::cout << "No Flowers available" << std::endl;
+    }
+    xpos = view[x]._x;
+    ypos = view[x]._y + 1.5;
+    zpos = view[x]._z + 1.5;
+    view[x].printInfo();
+    gluLookAt( xpos, ypos, zpos, view[x]._x, view[x]._y, view[x]._z, 0, 1, 0 );
 }
 
+// Keyboard controls
 void keyboard( unsigned char key, int x, int y ){
     float yrad = (yrot / 180 * 3.141592654f);
     float xrad = (xrot / 180 * 3.141592654f);
@@ -155,10 +182,20 @@ void keyboard( unsigned char key, int x, int y ){
         yrot-=5;
         break;
     case 'j':   // Decrease by 1 Row/Col
-        numCell--;
+        if( numCell > 0 ){
+            numCell--;
+        }
+        else {
+            std::cout << "No grid to shrink." << std::endl;
+        }
         break;
     case 'k':   // Increase by 1 Row/Col
-        numCell++;
+        if( numCell > numCols ){
+            numCell++;
+        }
+        else {
+            std::cout << "Maximum Grid Size (15x15) reached." << std::endl;
+        }
         break;
     case 'n':   // Add Flower
         addFlower();
@@ -167,13 +204,13 @@ void keyboard( unsigned char key, int x, int y ){
         removeFlower();
         break;
     case '1':   // Switch to origin flower
-        view_specific( 0, 0 );
+        view_specific( 0);
         break;
-    case '2':   // Switch to origin flower
-        view_specific( 2, 2 );
+    case '2':   // Switch to another flower
+        view_specific( 1);
         break;
-    case '3':   // Switch to origin flower
-        view_specific( 1, 4 );
+    case '3':   // Switch to another flower
+        view_specific( 2 );
         break;
     case 'f': // Print number of flowers
         std::cout << "Number of Flowers: " << numFlowers << std::endl;
@@ -253,14 +290,12 @@ int main(int argc, char* argv[])
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
 
-    field[0][0] = Flower( 0.5, 0, -0.5, (rand()%4)*.25 + .25 );
-    numFlowers++;
     addFlower();
 
     glutDisplayFunc(display) ;
     glutKeyboardFunc( keyboard );
-    glutMouseFunc( mouse );
-    glutPassiveMotionFunc( mousemove );
+    //glutMouseFunc( mouse );
+   // glutPassiveMotionFunc( mousemove );
    // glutTimerFunc( 10, timer, 0 );
 
     glutMainLoop();
