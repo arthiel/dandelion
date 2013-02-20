@@ -18,6 +18,8 @@ const int numCols = 15;
 int numFlowers = 0;
 Flower field[numRows][numCols];
 
+Flower view[3];
+
 void floor( int, int );
 
 /** 
@@ -50,6 +52,7 @@ void addFlower() {
     }
     field[y][x] = Flower( x +.5, 0, -y + .5, (rand()%4)*.25 +.05);
     field[y][x].printInfo();
+
     return;
 }
 
@@ -117,6 +120,20 @@ void floor( int row, int col ){
     glEnd();
 }
 
+void view_specific( int x, int y ){
+
+    while( field[y][x]._x != 0 ){
+        x = rand() % numCell;
+        y = rand()  % numCell;
+    }
+
+    xpos = field[x][y]._x;
+    ypos = field[x][y]._y + 1.5;
+    zpos = field[x][y]._z + 1.5;
+    field[x][y].printInfo();
+    gluLookAt( xpos, ypos, zpos, field[x][y]._x, field[x][y]._y, field[x][y]._z, 0, 1, 0 );
+}
+
 void keyboard( unsigned char key, int x, int y ){
     float yrad = (yrot / 180 * 3.141592654f);
     float xrad = (xrot / 180 * 3.141592654f);
@@ -127,8 +144,6 @@ void keyboard( unsigned char key, int x, int y ){
         ypos -= float( sin(xrad)) *.5;
         break;
     case 'a':   // Side step LEFT
-        /*xpos -= float( cos(yrad)) * 0.2;
-        zpos -= float( sin(yrad)) * 0.2;*/
         yrot+= 5;
         break;
     case 's':   // Move camera BACKWARD
@@ -137,12 +152,7 @@ void keyboard( unsigned char key, int x, int y ){
         ypos += float(sin(xrad)) *.5;
         break;
     case 'd':   // Side step RIGHT 
-       /* xpos += float( cos(yrad)) * 0.2;
-        zpos += float( sin(yrad)) *0.2;*/
         yrot-=5;
-        break;
-    case 'f':	// Add a flower
-
         break;
     case 'j':   // Decrease by 1 Row/Col
         numCell--;
@@ -157,11 +167,16 @@ void keyboard( unsigned char key, int x, int y ){
         removeFlower();
         break;
     case '1':   // Switch to origin flower
-        xpos = field[0][0]._x;
-        ypos = field[0][0]._y + 1.5;
-        zpos = field[0][0]._z + 1.5;
-        field[0][0].printInfo();
-        gluLookAt( xpos, ypos, zpos, field[0][0]._x, field[0][0]._y, field[0][0]._z, 0, 1, 0 );
+        view_specific( 0, 0 );
+        break;
+    case '2':   // Switch to origin flower
+        view_specific( 2, 2 );
+        break;
+    case '3':   // Switch to origin flower
+        view_specific( 1, 4 );
+        break;
+    case 'f': // Print number of flowers
+        std::cout << "Number of Flowers: " << numFlowers << std::endl;
         break;
     case 'q':   // Exit.
         exit(1);
