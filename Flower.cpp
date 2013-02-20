@@ -26,6 +26,7 @@ Flower::Flower(float x, float y, float z, float r){
     radius = r;
     root = Seedlet();
     seed_ind = 0;
+    seed_hair = (rand()%30)+10;
 	mathFlower();
 }
 
@@ -255,11 +256,16 @@ void Flower::drawHairs( ){
 
 void Flower::printInfo(){
     std::cout << "Tesselation Factor: " << tess_value << std::endl;
+    std::cout << "Density Level: " << seedlet_limit << std::endl;
+    std::cout << "# of Seedlets: " << seed_ind << std::endl;
+    std::cout << "Height: " << height << std::endl;
+    std::cout << "Radius: " << radius << std::endl;
+    std::cout << "Seedlet Hair Length: " << seed_hair << std::endl;
 }
 
 void Flower::checkSeedletExist( Point3 rotateMe, Seedlet go ){
-    std::cout << seed_ind << std::endl;
-    if( seed_ind >= 30 ){
+    //std::cout << seed_ind << std::endl;
+    if( seed_ind >= 50 ){
         return;
     }
     for( int i = 0; i <= seed_ind; i++ ){
@@ -267,7 +273,7 @@ void Flower::checkSeedletExist( Point3 rotateMe, Seedlet go ){
             return;
         }
     }
-    seeds[seed_ind] = Seedlet( rotateMe, radius );
+    seeds[seed_ind] = Seedlet( rotateMe, radius, seed_hair);
     seed_ind++;
     return;
 

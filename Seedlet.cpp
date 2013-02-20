@@ -11,6 +11,7 @@ Seedlet::Seedlet(){
     rot_z = 1;
 }
 
+// Define a seedlet with xyz rotations and a height
 Seedlet::Seedlet( Point3 rot, float h ) {
     rot_x = rot.x;
     rot_y = rot.y;
@@ -19,22 +20,37 @@ Seedlet::Seedlet( Point3 rot, float h ) {
     ctrlpnt_x = .3;
     ctrlpnt_y = .1;
     height = h;
-    Seedlet next =Seedlet();
-    Seedlet prev = Seedlet();
+    hairCount = 18;
 }
 
+// Define a seedlet with xyz rotations and a height
+Seedlet::Seedlet( Point3 rot, float h, int num_hairs ) {
+    rot_x = rot.x;
+    rot_y = rot.y;
+    rot_z = rot.z;
+    hairlen = (float)((rand() % 3)/4) + .5;
+    ctrlpnt_x = .3;
+    ctrlpnt_y = .1;
+    height = h;
+    hairCount = num_hairs;
+}
+
+// Define a seedlet with xyz rotations and height
 Seedlet::Seedlet( float x, float y, float z, float h ){
     rot_x = x;
     rot_y = y;
     rot_z = z;
     hairlen = (float)((rand() % 3)/4) + .5;
-    ctrlpnt_x = .3;
-    ctrlpnt_y = .1;
+    //ctrlpnt_x = .3;
+    //ctrlpnt_y = .1;
     height = h;
-    //ctrlpnt_x = (rand() % 4 ) * .1;
-    //ctrlpnt_y = (rand() % 2 ) * .1;
+    // Randomly curved hairs, because not all are uniform.
+    ctrlpnt_x = (rand() % 4 ) * .1;
+    ctrlpnt_y = (rand() % 2 ) * .1;
+    hairCount = 18;
 }
 
+// Draw the seedlet.
 void Seedlet::drawSeedlet(){
     glPushMatrix();
     glRotatef( rot_x, 1, 0, 0 );
@@ -71,10 +87,10 @@ void Seedlet::jitter(){
 
 void Seedlet::drawHairs( ){
     glPushMatrix();
-    int angle = 0;
-    for( int i = 0; i < 18; i++ ){
+    int angle = 360/hairCount;
+    for( int i = 0; i < hairCount; i++ ){
         // Rotate to a different position
-        glRotatef( 20, 0, 1, 0 );
+        glRotatef( angle, 0, 1, 0 );
 
         Vector3 rot_matrix[3] = { Vector3(0, 0, 0), Vector3(0, (1-cos(angle))+cos(angle), 0), Vector3(0,0,0) };
         // Point P
@@ -106,6 +122,7 @@ void Seedlet::drawHairs( ){
     glPopMatrix();
 }
 
+// Returns the rotations for this seedlet.
 Point3 Seedlet::returnRots(){
     return Point3( rot_x, rot_y, rot_z );
 }

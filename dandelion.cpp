@@ -12,8 +12,8 @@ int WINDOW_WIDTH = 500;
 float xrot = 0, yrot = 0, xpos = 0, ypos = 2, zpos = 10;
 int numCell = 3;
 // Need to be able to increase these.
-const int numRows = 5;
-const int numCols = 5;
+const int numRows = 15;
+const int numCols = 15;
 // End
 int numFlowers = 0;
 Flower field[numRows][numCols];
@@ -45,12 +45,11 @@ void addFlower() {
     int x = rand() % numCell;
     int y = rand()% numCell;
     while( field[y][x]._x != 0 ){
-        std::cout << x << " " << y << std::endl;
-
         x = rand() % numCell;
         y = rand()  % numCell;
     }
-    field[y][x] = Flower( x +.5, 0, -y + .5, (rand()%4)*.25 );
+    field[y][x] = Flower( x +.5, 0, -y + .5, (rand()%4)*.25 +.05);
+    field[y][x].printInfo();
     return;
 }
 
@@ -66,7 +65,7 @@ void removeFlower() {
     int x = rand() % numCell;
     int y = rand()% numCell;
     while( field[y][x]._x == 0 ){
-        std::cout << x << " " << y << std::endl;
+        //std::cout << x << " " << y << std::endl;
 
         x = rand() % numCell;
         y = rand()  % numCell;
@@ -130,7 +129,7 @@ void keyboard( unsigned char key, int x, int y ){
     case 'a':   // Side step LEFT
         /*xpos -= float( cos(yrad)) * 0.2;
         zpos -= float( sin(yrad)) * 0.2;*/
-        yrot+=5;
+        yrot+= 5;
         break;
     case 's':   // Move camera BACKWARD
         xpos -= float( sin(yrad)) *.5;
@@ -177,13 +176,13 @@ void timer( int val ){
 }
 
 void mouse( int button, int state, int x, int y ){
-    std::cout << x << std::endl;
+    //std::cout << x << std::endl;
 }
 
 void mousemove(int x, int y ){
     float yrad = (yrot / 180 * 3.141592654f);
     float xrad = (xrot / 180 * 3.141592654f);
-    std::cout << x << std::endl;
+    //std::cout << x << std::endl;
     if( y > WINDOW_HEIGHT/2 ){   // Forward
         xpos += float( sin(yrad)) *.5;
         zpos -= float( cos(yrad)) *.5;
@@ -239,7 +238,7 @@ int main(int argc, char* argv[])
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
 
-    field[0][0] = Flower( 0.5, 0, -0.5, (rand()%4)*.25 );
+    field[0][0] = Flower( 0.5, 0, -0.5, (rand()%4)*.25 + .25 );
     numFlowers++;
     addFlower();
 

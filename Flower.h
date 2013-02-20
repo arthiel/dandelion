@@ -20,12 +20,13 @@ public:
         int tess_value;
         int count, seedlet_limit;
         float radius;
-        Seedlet seeds[30];
+        Seedlet seeds[50];
         Seedlet root;
         int seed_ind;
+        int seed_hair;
 
     Flower();
-	Flower( float, float, float, float );
+	Flower( float x, float y, float z, float r);
 	void mathFlower();
     void makeFlower();
     void Sphere( int n );

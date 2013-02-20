@@ -79,7 +79,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="Flower.h" />
     <ClInclude Include="Seedlet.h" />
     <ClInclude Include="stdafx.h" />
@@ -87,7 +86,6 @@
     <ClInclude Include="vecmath.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="dandelion.cpp" />
     <ClCompile Include="Flower.cpp" />
     <ClCompile Include="Seedlet.cpp" />

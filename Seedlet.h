@@ -18,11 +18,10 @@ private:
     float rot_x, rot_y, rot_z; // How much it was rotated in each direction
     float hairlen, ctrlpnt_x, ctrlpnt_y;
 public:
-    Seedlet next();
-    Seedlet prev();
     // Constructors
     Seedlet();
     Seedlet( Point3 rot, float height );
+    Seedlet( Point3 rot, float h, int num_hairs );
     Seedlet( float x, float y, float z, float height );
     void drawSeedlet();
     void jitter();
